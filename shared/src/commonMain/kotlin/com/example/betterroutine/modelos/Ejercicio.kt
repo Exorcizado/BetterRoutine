@@ -1,8 +1,9 @@
 package com.example.betterroutine.modelos
 
-class Ejercicio (
-    val Sets: Int,
-    val Repeticiones: Int,
-    val Peso: Int
-){
-}
+data class Ejercicio(
+    val id: Int,
+    val nombre: String,
+    val sets: Int,
+    val repeticiones: Int,
+    val peso: Double
+)

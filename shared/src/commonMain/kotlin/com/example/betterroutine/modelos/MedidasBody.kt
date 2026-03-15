@@ -1,6 +1,6 @@
 package com.example.betterroutine.modelos
 
-class MedidasBody (
+data class MedidasBody (
     val Pecho: Int,
     val Muslos: Int,
     val Cintura: Int,

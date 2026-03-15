@@ -1,150 +1,49 @@
 package com.example.betterroutine
 
-import com.example.betterroutine.vistas.AjustesScreen
-import com.example.betterroutine.vistas.HomeScreen
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
-import betterroutine.composeapp.generated.resources.Res
-import betterroutine.composeapp.generated.resources.compose_multiplatform
-import kotlinx.coroutines.launch
-import com.example.betterroutine.vistas.InicioScreen
 import com.example.betterroutine.vistas.AjustesScreen
+import com.example.betterroutine.vistas.GymScreen
+import com.example.betterroutine.vistas.InicioScreen
+import com.example.betterroutine.vistas.PendientesScreen
 
 enum class Pantalla {
     INICIO,
     PENDIENTES,
     GYM,
-    FINANZAS,
-    AJUSTES,
+    AJUSTES
 }
 
 @Composable
 fun App() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
     var pantallaActual by remember { mutableStateOf(Pantalla.INICIO) }
-
     var esOscuro by remember { mutableStateOf(false) }
-    val colores = if (esOscuro) darkColorScheme() else lightColorScheme()
 
-    MaterialTheme(colorScheme = colores) {
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet {
-                    Text(
-                        "BetterRoutine",
-                        modifier = Modifier.padding(24.dp),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    HorizontalDivider()
-
-                    NavigationDrawerItem(
-                        label = { Text("Inicio") },
-                        selected = pantallaActual == Pantalla.INICIO,
-                        icon = { Icon(Icons.Filled.Home, null) },
-                        onClick = {
-                            pantallaActual = Pantalla.INICIO
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-
-                    NavigationDrawerItem(
-                        label = { Text("Pendientes") },
-                        selected = pantallaActual == Pantalla.PENDIENTES,
-                        icon = { Icon(Icons.Filled.DateRange, null) },
-                        onClick = {
-                            pantallaActual = Pantalla.PENDIENTES
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-
-                    NavigationDrawerItem(
-                        label = { Text("GYM") },
-                        selected = pantallaActual == Pantalla.GYM,
-                        icon = { Icon(Icons.Filled.DateRange, null) },
-                        onClick = {
-                            pantallaActual = Pantalla.GYM
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-
-                    NavigationDrawerItem(
-                        label = { Text("FINANZAS") },
-                        selected = pantallaActual == Pantalla.FINANZAS,
-                        icon = { Icon(Icons.Filled.List, null) },
-                        onClick = {
-                            pantallaActual = Pantalla.FINANZAS
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    HorizontalDivider()
-
-                    NavigationDrawerItem(
-                        label = { Text("Ajustes") },
-                        selected = pantallaActual == Pantalla.AJUSTES,
-                        icon = { Icon(Icons.Filled.Settings, null) },
-                        onClick = {
-                            pantallaActual = Pantalla.AJUSTES
-                            scope.launch { drawerState.close() }
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+    MaterialTheme(colorScheme = if (esOscuro) darkColorScheme() else lightColorScheme()) {
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    NavigationBarItem(icon = { Icon(Icons.Filled.Home, null) }, label = { Text("Inicio") }, selected = pantallaActual == Pantalla.INICIO, onClick = { pantallaActual = Pantalla.INICIO })
+                    NavigationBarItem(icon = { Icon(Icons.Filled.Check, null) }, label = { Text("Rutina") }, selected = pantallaActual == Pantalla.PENDIENTES, onClick = { pantallaActual = Pantalla.PENDIENTES })
+                    NavigationBarItem(icon = { Icon(Icons.Filled.Person, null) }, label = { Text("Gym") }, selected = pantallaActual == Pantalla.GYM, onClick = { pantallaActual = Pantalla.GYM })
+                    NavigationBarItem(icon = { Icon(Icons.Filled.Settings, null) }, label = { Text("Ajustes") }, selected = pantallaActual == Pantalla.AJUSTES, onClick = { pantallaActual = Pantalla.AJUSTES })
                 }
             }
-        ) {
-            Surface(
-                modifier = Modifier.padding(),
-                color = MaterialTheme.colorScheme.background
-            ) {
+        ) { paddingValues ->
+            Surface(modifier = Modifier.fillMaxSize().padding(paddingValues), color = MaterialTheme.colorScheme.background) {
                 when (pantallaActual) {
-                    Pantalla.INICIO -> InicioScreen(onMenuClick = { scope.launch { drawerState.open() } })
-                    Pantalla.PENDIENTES -> PendientesScreen(onMenuClick = { scope.launch { drawerState.open() } })
-                    Pantalla.GYM -> GymScreen(onMenuClick = { scope.launch { drawerState.open() } })
-                    Pantalla.FINANZAS -> FinanzasScreen(onMenuClick = { scope.launch { drawerState.open() } })
-                    Pantalla.AJUSTES -> AjustesScreen(
-                        onMenuClick = { scope.launch { drawerState.open() } },
-                        esOscuro = esOscuro,
-                        onCambioTema = { esOscuro = it }
-                    )
+                    Pantalla.INICIO -> InicioScreen()
+                    Pantalla.PENDIENTES -> PendientesScreen()
+                    Pantalla.GYM -> GymScreen()
+                    Pantalla.AJUSTES -> AjustesScreen(esOscuro = esOscuro, onCambioTema = { esOscuro = it })
                 }
             }
         }
